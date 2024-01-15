@@ -1,0 +1,41 @@
+---
+layout: default
+title: Moja Strona Jekyll z Linkami
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+</head>
+<body>
+
+    <header>
+        <h1>{{ page.title }}</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Strona Główna</a></li>
+                <li><a href="/o-nas">O Nas</a></li>
+                <li><a href="/kontakt">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <p>Witaj na mojej stronie internetowej stworzonej przy użyciu Jekyll!</p>
+
+        <!-- Hiperłącza do zewnętrznych witryn -->
+        <p>Odwiedź również:
+            <a href="https://firefaucet.win/ref/1012399" target="_blank">FireFaucet</a> oraz
+            <a href="https://allcoins.pw/?ref=692040" target="_blank">Allcoins.pw</a>.
+        </p>
+    </main>
+
+    <footer>
+        <p>&copy; 2022 Moja Strona Jekyll</p>
+    </footer>
+
+</body>
+</html>
