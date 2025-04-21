@@ -1323,17 +1323,22 @@
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-        const socket = io();
-        const userEl = document.getElementById("users");
+<script>
+    const socket = io();
+    const userEl = document.getElementById("users");
 
-        socket.on("updateUsers", (count) => {
-            userEl.textContent = count;
-    <script src="https://publisher.linkvertise.com/cdn/linkvertise.js">
-    linkvertise(1230577, {
-      whitelist: [],
-      blacklist: []
+    socket.on("updateUsers", (count) => {
+        userEl.textContent = count;
     });
-  </script>
+</script>
+
+<script src="https://publisher.linkvertise.com/cdn/linkvertise.js"></script>
+<script>
+    linkvertise(1230577, {
+        whitelist: [],
+        blacklist: []
+    });
+</script>
+
 </body>
 </html>
