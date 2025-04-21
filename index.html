@@ -1339,6 +1339,13 @@
         blacklist: []
     });
 </script>
+<script>
+        const link = document.getElementById("myLink");
 
+        link.addEventListener("click", function(e) {
+            e.preventDefault(); // zapobiega domyślnej akcji (przejście do #)
+            link.classList.add("clicked");
+        });
+</script>
 </body>
 </html>
