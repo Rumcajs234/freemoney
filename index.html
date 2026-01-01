@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <title>earn crypto and money</title>
-<style>
+    <style>
         body {
             font-family: Arial, sans-serif;
             margin: 40px;
@@ -33,16 +32,14 @@
             background-color: #d0d0d0;
         }
         a.clicked {
-            background-color: #a0c4ff; /* kolor po kliknięciu */
+            background-color: #a0c4ff;
             color: white;
         }
     </style>
-
 </head>
 <body>
-    <h1>online: <span id="users">0</span></h1>
-    <div class="links">
-        <a href="https://link-hub.net/1230577/fire-cryptotab-cashback">crypto cashback</a>
+        <!-- Wszystkie Twoje linki bez zmian -->
+                <a href="https://link-hub.net/1230577/fire-cryptotab-cashback">crypto cashback</a>
         <a href="https://cloudminecrypto.com/?invite_code=mv7rVqpGL7xjaydz">cloud miner crypto</a>
         <a href="https://telegram.me/TronFaucetBot?start=5493878206">Tron Faucet bot</a>
         <a href="https://t.me/GrokAiMiningBot?start=5493878206">Grok ai mining bot</a>
@@ -179,30 +176,10 @@
         <a href="https://rollercoin.com/?r=l2ygg6n3">Rollercoin</a>
     </div>
 
-    <script src="/socket.io/socket.io.js"></script>
-<script>
-    const socket = io();
-    const userEl = document.getElementById("users");
+    <script src="https://publisher.linkvertise.com/cdn/linkvertise.js"></script>
+    <script>
+        linkvertise(1230577, { whitelist: ["https://smmkings.com/ref/ggsz0"], blacklist: [] });
+    </script>
 
-    socket.on("updateUsers", (count) => {
-        userEl.textContent = count;
-    });
-</script>
-
-<script src="https://publisher.linkvertise.com/cdn/linkvertise.js"></script>
-<script>
-    linkvertise(1230577, {
-        whitelist: [],
-        blacklist: []
-    });
-</script>
-<script>
-        const link = document.getElementById("myLink");
-
-        link.addEventListener("click", function(e) {
-            e.preventDefault(); // zapobiega domyślnej akcji (przejście do #)
-            link.classList.add("clicked");
-        });
-</script>
 </body>
 </html>
