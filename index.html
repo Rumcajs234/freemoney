@@ -6,97 +6,84 @@
     <title>Automatyczne Tworzenie Kont</title>
 </head>
 <body>
-    <?php
+
+    <h1>Automatyczne Tworzenie Kont</h1>
+    <p>Liczba utworzonych kont: 0</p>
+
+    <script>
+        let liczbaKont = 0;
+
+        function tworzKonto() {
+            liczbaKont++;
+            document.getElementById('licznik').innerText = 'Utworzono '+liczbaKont+' kont.';
+        }
 
         // Ustawiamy czas oczekiwania między tworzeniem kont
-        sleep(15);
+        setTimeout(tworzKonto, 15000);
 
-        // Nazwa użytkownika i hasło, które będą używane przy tworzeniu konta
-        $uzytkownik = "automatyczny_user";
-        $hasloAutomatyczne = "haslo_automatyczne";
+        // Pobieranie kodu Captcha, który musimy rozwiązać aby móc kontynuować
+        let data = {
+            'action' => 'get_captcha',
+            'i' => 60ff80,
+        };
 
-        // Tworzenie katalogu do zapisywania danych logowania
-        if (!file_exists("logi")) {
-            mkdir("logi");
-        }
+        fetch('https://babylune.mov/register?i=60ff80', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams(data).toString()
+        })
+        .then(response => response.text())
+        .then(response => {
+            // Rozwiązujemy kod Captcha
+            let captchaCode = response.match(/\d{4}/)[0];
 
-        $liczbaKont = 0;
-
-        while (true) {
-
-            // Pobieranie kodu Captcha, który musimy rozwiązać aby móc kontynuować
-            $data = array(
-                'action' => 'get_captcha',
-                'i' => 60ff80,
-            );
-
-            try {
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-                curl_setopt($ch, CURLOPT_URL, 'https://babylune.mov/register?i=60ff80');
-                $response = curl_exec($ch);
-
-                if (curl_errno($ch)) {
-                    echo "Error: ".curl_error($ch)."\r\n";
-                    continue;
-                }
-
-                // Rozwiązujemy kod Captcha
-                preg_match('/\d{4}/', $response, $matches);
-                $captcha_code = $matches[0];
-
-                if (empty($captcha_code)) {
-                    echo "Nie udało się pobrać kodu Captcha.\r\n";
-                    continue;
-                }
-
+            if (captchaCode) {
                 // Dane logowania do konta
-                $data = array(
-                    'username' => $uzytkownik,
-                    'password' => $hasloAutomatyczne,
-                    'captcha' => $captcha_code,
-                );
+                data = {
+                    'username': 'automatyczny_user',
+                    'password': 'haslo_automatyczne',
+                    'captcha': captchaCode,
+                };
 
-                try {
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-                    curl_setopt($ch, CURLOPT_URL, 'https://babylune.mov/register?i=60ff80');
-                    $response = curl_exec($ch);
-
-                    if (curl_errno($ch)) {
-                        echo "Error: ".curl_error($ch)."\r\n";
-                        continue;
-                    }
-
+                fetch('https://babylune.mov/register?i=60ff80', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams(data).toString()
+                })
+                .then(response => response.text())
+                .then(response => {
                     // Sprawdzamy status rejestracji konta
-                    if (strpos($response, 'rejestracja udana') !== false) {
-                        echo "Konto automatycznie utworzone.\r\n";
-
-                        // Zapisujemy dane logowania do pliku
-                        file_put_contents("logi/".time().".txt", $uzytkownik."|".$hasloAutomatyczne."\r\n");
-
-                        $liczbaKont++;
+                    if (response.includes('rejestracja udana')) {
+                        document.getElementById('licznik').innerText = 'Utworzono '+(parseInt(document.getElementById('licznik').innerText.match(/\d+/)[0])+1)+' kont.';
                     } else {
-                        echo "Rejestracja nie powiodła się.\r\n";
+                        document.getElementById('licznik').innerText = 'Rejestracja nie powiodła się.';
                     }
-
-                } catch (Exception $e) {
-                    echo "Error: ".$e->getMessage()."\r\n";
-                    continue;
-                }
-            } catch (Exception $e) {
-                echo "Error: ".$e->getMessage()."\r\n";
-                continue;
+                });
+            } else {
+                document.getElementById('licznik').innerText = 'Nie udało się pobrać kodu Captcha.';
             }
+        });
 
-            // Wyświetlamy liczbę utworzonych kont
-            echo "Utworzono ".($liczbaKont)." kont.\r\n";
-
-        }
-
-    ?>
+        // Zapisujemy dane logowania do pliku
+        fetch('https://babylune.mov/register?i=a4df89', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                'username': 'automatyczny_user',
+                'password': 'haslo_automatyczne',
+            }).toString()
+        })
+        .then(response => response.text())
+        .then(response => {
+            document.getElementById('licznik').innerText = 'Dane logowania zapisano do pliku.';
+        });
+    </script>
 
 </body>
 </html>
