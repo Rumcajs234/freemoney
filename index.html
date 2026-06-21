@@ -2,88 +2,81 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automatyczne Tworzenie Kont</title>
+    <title>Brute Force Atak na Opuszczony Portfel</title>
 </head>
 <body>
+    <h1>Brute Force Atak na Opuszczony Portfel</h1>
+    <form id="form" onsubmit="startAttack()">
+        Wprowadź adres portfela: <input type="text" id="address" placeholder="Adres portfela">
+        <button typemodif="submit">Start ataku</button>
+    </form>
 
-    <h1>Automatyczne Tworzenie Kont</h1>
-    <p>Liczba utworzonych kont: 0</p>
+    <div id="results"></div>
 
     <script>
-        let liczbaKont = 0;
+        const addresses = [
+            "BTC",
+            "LTC",
+            "ETH",
+            "USDT",
+            "TRX",
+            "SOL",
+            "BNB",
+            "XMR",
+            "DGB"
+        ];
 
-        function tworzKonto() {
-            liczbaKont++;
-            document.getElementById('licznik').innerText = 'Utworzono '+liczbaKont+' kont.';
+        let attackRunning = false;
+
+        function startAttack() {
+            const addressInput = document.getElementById("address").value;
+            const form = document.getElementById("form");
+
+            if (attackRunning) {
+                console.log("Atak już jest w trakcie.");
+                return false;
+            }
+
+            form.style.display = "none";
+            attackRunning = true;
+
+            setTimeout(() => {
+                for (const address of addresses) {
+                    setTimeout(() => {
+                        const cryptoItem = document.createElement("li");
+                        cryptoItem.textContent = address;
+                        const resultsDiv = document.getElementById("results");
+
+                        if (address === addressInput.toUpperCase()) {
+                            console.log(`Znaleziono portfel z ${address} na adresie: ${addressInput}`);
+                            displayResult(address, addressInput);
+                        }
+
+                        resultsDiv.appendChild(cryptoItem);
+
+                        setTimeout(() => {
+                            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+                        }, 100);
+                    }, 1000 * (addresses.indexOf(address) + 1));
+                }
+
+                setTimeout(() => {
+                    form.style.display = "block";
+                    attackRunning = false;
+                }, 5000);
+            }, 1000);
         }
 
-        // Ustawiamy czas oczekiwania między tworzeniem kont
-        setTimeout(tworzKonto, 15000);
+        function displayResult(crypto, address) {
+            const resultsDiv = document.getElementById("results");
+            const resultItem = document.createElement("p");
+            resultItem.textContent = `Znaleziono portfel z ${crypto} na adresie: ${address}`;
+            resultsDiv.appendChild(resultItem);
 
-        // Pobieranie kodu Captcha, który musimy rozwiązać aby móc kontynuować
-        let data = {
-            'action' => 'get_captcha',
-            'i' => 60ff80,
-        };
-
-        fetch('https://babylune.mov/register?i=60ff80', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams(data).toString()
-        })
-        .then(response => response.text())
-        .then(response => {
-            // Rozwiązujemy kod Captcha
-            let captchaCode = response.match(/\d{4}/)[0];
-
-            if (captchaCode) {
-                // Dane logowania do konta
-                data = {
-                    'username': 'automatyczny_user',
-                    'password': 'haslo_automatyczne',
-                    'captcha': captchaCode,
-                };
-
-                fetch('https://babylune.mov/register?i=60ff80', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: new URLSearchParams(data).toString()
-                })
-                .then(response => response.text())
-                .then(response => {
-                    // Sprawdzamy status rejestracji konta
-                    if (response.includes('rejestracja udana')) {
-                        document.getElementById('licznik').innerText = 'Utworzono '+(parseInt(document.getElementById('licznik').innerText.match(/\d+/)[0])+1)+' kont.';
-                    } else {
-                        document.getElementById('licznik').innerText = 'Rejestracja nie powiodła się.';
-                    }
-                });
-            } else {
-                document.getElementById('licznik').innerText = 'Nie udało się pobrać kodu Captcha.';
-            }
-        });
-
-        // Zapisujemy dane logowania do pliku
-        fetch('https://babylune.mov/register?i=a4df89', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({
-                'username': 'automatyczny_user',
-                'password': 'haslo_automatyczne',
-            }).toString()
-        })
-        .then(response => response.text())
-        .then(response => {
-            document.getElementById('licznik').innerText = 'Dane logowania zapisano do pliku.';
-        });
+            setTimeout(() => {
+                resultsDiv.scrollTop = resultsDiv.scrollHeight;
+            }, 100);
+        }
     </script>
-
 </body>
 </html>
